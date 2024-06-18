@@ -29,12 +29,19 @@ import java.util.List;
 @Slf4j
 public class PetController {
 
+	String name = null;
+
 	//@Autowired
 	private PetService petService;
 
 	//@Autowired
 	private PetMapper mapper;
 
+	/**
+	 *  Change
+	 * @param petService
+	 * @param mapper
+	 */
 	public PetController(PetService petService, PetMapper mapper){
 		this.petService = petService;
 		this.mapper = mapper ;
@@ -48,13 +55,13 @@ public class PetController {
 	@GetMapping(value = "/pets")
 	public ResponseEntity<List<PetTO>> findAllPets() {
 
-		List<Pet> pets = (List<Pet>) petService.findAll();
-		//log.info("pets: " + pets);
-		//pets.forEach(item -> log.info("Pet >>  {} ", item));
+		List<Pet> pets = petService.findAll();
+		log.info("pets: " + pets);
+		pets.forEach(item -> log.info("Pet >>  {} ", item));
 
 		List<PetTO> petsTO = this.mapper.toPetTOList(pets);
-		//log.info("petsTO: " + petsTO);
-		//petsTO.forEach(item -> log.info("PetTO >>  {} ", item));
+		log.info("petsTO: " + petsTO);
+		petsTO.forEach(item -> log.info("PetTO >>  {} ", item));
 
 		return ResponseEntity.ok(petsTO);
 
@@ -99,7 +106,6 @@ public class PetController {
 			return ResponseEntity.notFound().build();
 		}
 		return ResponseEntity.ok(petTO);
-
 	}
 
 	/**
