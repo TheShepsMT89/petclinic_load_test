@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Pet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PetClinic</a> &gt; <a href="index.source.html" class="el_package">com.tecsup.petclinic.entities</a> &gt; <span class="el_source">Pet.java</span></div><h1>Pet.java</h1><pre class="source lang-java linenums">package com.tecsup.petclinic.entities;
+
+import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import jakarta.persistence.*;
+import java.util.Date;
+
+/**
+ * 
+ * @author jgomezm
+ *
+ */
+@Entity(name = &quot;pets&quot;)
+<span class="pc bpc" id="L15" title="22 of 34 branches missed.">@Data</span>
+public class Pet {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+<span class="fc" id="L20">	private Integer id;</span>
+<span class="fc" id="L21">	private String name;</span>
+	@Column(name = &quot;type_id&quot;)
+<span class="fc" id="L23">	private int typeId;</span>
+	@Column(name = &quot;owner_id&quot;)
+<span class="fc" id="L25">	private int ownerId;</span>
+
+	@DateTimeFormat(pattern = &quot;yyyy-MM-dd&quot;)
+	@Column(name = &quot;birth_date&quot;)
+<span class="fc" id="L29">	private Date birthDate;</span>
+	
+<span class="fc" id="L31">	public Pet() {</span>
+<span class="fc" id="L32">	}</span>
+
+	public Pet(Integer id, String name, int type_id, int owner_id, Date birthDate) {
+<span class="fc" id="L35">		super();</span>
+<span class="fc" id="L36">		this.id = id;</span>
+<span class="fc" id="L37">		this.name = name;</span>
+<span class="fc" id="L38">		this.typeId = type_id;</span>
+<span class="fc" id="L39">		this.ownerId = owner_id;</span>
+<span class="fc" id="L40">		this.birthDate = birthDate;</span>
+
+<span class="fc" id="L42">	}</span>
+
+	public Pet(String name, int type_id, int owner_id, Date birthDate) {
+<span class="fc" id="L45">		super();</span>
+<span class="fc" id="L46">		this.name = name;</span>
+<span class="fc" id="L47">		this.typeId = type_id;</span>
+<span class="fc" id="L48">		this.ownerId = owner_id;</span>
+<span class="fc" id="L49">		this.birthDate = birthDate;</span>
+<span class="fc" id="L50">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

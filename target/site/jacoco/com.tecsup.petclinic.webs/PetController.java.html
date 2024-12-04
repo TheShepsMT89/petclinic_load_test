@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PetController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PetClinic</a> &gt; <a href="index.source.html" class="el_package">com.tecsup.petclinic.webs</a> &gt; <span class="el_source">PetController.java</span></div><h1>PetController.java</h1><pre class="source lang-java linenums">package com.tecsup.petclinic.webs;
+
+import com.tecsup.petclinic.mapper.PetMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.tecsup.petclinic.domain.PetTO;
+import com.tecsup.petclinic.entities.Pet;
+import com.tecsup.petclinic.exception.PetNotFoundException;
+import com.tecsup.petclinic.services.PetService;
+
+import java.util.List;
+
+/**
+ * 
+ * @author jgomezm
+ *
+ */
+@RestController
+<span class="fc" id="L29">@Slf4j</span>
+public class PetController {
+
+<span class="fc" id="L32">	String name = null;</span>
+
+	//@Autowired
+	private PetService petService;
+
+	//@Autowired
+	private PetMapper mapper;
+
+	/**
+	 *  Change
+	 * @param petService
+	 * @param mapper
+	 */
+<span class="fc" id="L45">	public PetController(PetService petService, PetMapper mapper){</span>
+<span class="fc" id="L46">		this.petService = petService;</span>
+<span class="fc" id="L47">		this.mapper = mapper ;</span>
+<span class="fc" id="L48">	}</span>
+
+	/**
+	 * Get all pets
+	 *
+	 * @return
+	 */
+	@GetMapping(value = &quot;/pets&quot;)
+	public ResponseEntity&lt;List&lt;PetTO&gt;&gt; findAllPets() {
+
+<span class="fc" id="L58">		List&lt;Pet&gt; pets = petService.findAll();</span>
+<span class="fc" id="L59">		log.info(&quot;pets: &quot; + pets);</span>
+<span class="fc" id="L60">		pets.forEach(item -&gt; log.info(&quot;Pet &gt;&gt;  {} &quot;, item));</span>
+
+<span class="fc" id="L62">		List&lt;PetTO&gt; petsTO = this.mapper.toPetTOList(pets);</span>
+<span class="fc" id="L63">		log.info(&quot;petsTO: &quot; + petsTO);</span>
+<span class="fc" id="L64">		petsTO.forEach(item -&gt; log.info(&quot;PetTO &gt;&gt;  {} &quot;, item));</span>
+
+<span class="fc" id="L66">		return ResponseEntity.ok(petsTO);</span>
+
+	}
+
+
+	/**
+	 * Create pet
+	 *
+	 * @param petTO
+	 * @return
+	 */
+	@PostMapping(value = &quot;/pets&quot;)
+	@ResponseStatus(HttpStatus.CREATED)
+	ResponseEntity&lt;PetTO&gt; create(@RequestBody PetTO petTO) {
+
+<span class="fc" id="L81">		Pet newPet = this.mapper.toPet(petTO);</span>
+<span class="fc" id="L82">		PetTO newPetTO = this.mapper.toPetTO(petService.create(newPet));</span>
+
+<span class="fc" id="L84">		return  ResponseEntity.status(HttpStatus.CREATED).body(newPetTO);</span>
+
+	}
+
+
+	/**
+	 * Find pet by id
+	 *
+	 * @param id
+	 * @return
+	 * @throws PetNotFoundException
+	 */
+	@GetMapping(value = &quot;/pets/{id}&quot;)
+	ResponseEntity&lt;PetTO&gt; findById(@PathVariable Integer id) {
+
+<span class="fc" id="L99">		PetTO petTO = null;</span>
+
+		try {
+<span class="fc" id="L102">			Pet pet = petService.findById(id);</span>
+<span class="fc" id="L103">			petTO = this.mapper.toPetTO(pet);</span>
+
+<span class="fc" id="L105">		} catch (PetNotFoundException e) {</span>
+<span class="fc" id="L106">			return ResponseEntity.notFound().build();</span>
+<span class="fc" id="L107">		}</span>
+<span class="fc" id="L108">		return ResponseEntity.ok(petTO);</span>
+	}
+
+	/**
+	 * Update and create pet
+	 *
+	 * @param petTO
+	 * @param id
+	 * @return
+	 */
+	@PutMapping(value = &quot;/pets/{id}&quot;)
+	ResponseEntity&lt;PetTO&gt;  update(@RequestBody PetTO petTO, @PathVariable Integer id) {
+
+<span class="fc" id="L121">		PetTO updatePetTO = null;</span>
+
+		try {
+
+<span class="fc" id="L125">			Pet updatePet = petService.findById(id);</span>
+
+<span class="fc" id="L127">			updatePet.setName(petTO.getName());</span>
+<span class="fc" id="L128">			updatePet.setOwnerId(petTO.getOwnerId());</span>
+<span class="fc" id="L129">			updatePet.setTypeId(petTO.getTypeId());</span>
+
+<span class="fc" id="L131">			petService.update(updatePet);</span>
+
+<span class="fc" id="L133">			updatePetTO = this.mapper.toPetTO(updatePet);</span>
+
+<span class="nc" id="L135">		} catch (PetNotFoundException e) {</span>
+<span class="nc" id="L136">			return ResponseEntity.notFound().build();</span>
+<span class="fc" id="L137">		}</span>
+
+<span class="fc" id="L139">		return ResponseEntity.ok(updatePetTO);</span>
+	}
+
+	/**
+	 * Delete pet by id
+	 *
+	 * @param id
+	 */
+	@DeleteMapping(value = &quot;/pets/{id}&quot;)
+	ResponseEntity&lt;String&gt; delete(@PathVariable Integer id) {
+
+		try {
+<span class="fc" id="L151">			petService.delete(id);</span>
+<span class="fc" id="L152">			return ResponseEntity.ok(&quot; Delete ID :&quot; + id);</span>
+<span class="fc" id="L153">		} catch (PetNotFoundException e) {</span>
+<span class="fc" id="L154">			return ResponseEntity.notFound().build();</span>
+		}
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

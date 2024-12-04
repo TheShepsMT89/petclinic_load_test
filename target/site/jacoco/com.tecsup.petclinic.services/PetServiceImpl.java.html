@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PetServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PetClinic</a> &gt; <a href="index.source.html" class="el_package">com.tecsup.petclinic.services</a> &gt; <span class="el_source">PetServiceImpl.java</span></div><h1>PetServiceImpl.java</h1><pre class="source lang-java linenums">package com.tecsup.petclinic.services;
+
+import java.util.List;
+import java.util.Optional;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import com.tecsup.petclinic.entities.Pet;
+import com.tecsup.petclinic.exception.PetNotFoundException;
+import com.tecsup.petclinic.repositories.PetRepository;
+
+/**
+ * 
+ * @author jgomezm
+ *
+ */
+@Service
+<span class="fc" id="L19">@Slf4j</span>
+public class PetServiceImpl implements PetService {
+
+
+	PetRepository petRepository;
+
+<span class="fc" id="L25">	public PetServiceImpl (PetRepository petRepository) {</span>
+<span class="fc" id="L26">		this. petRepository = petRepository;</span>
+<span class="fc" id="L27">	}</span>
+
+
+	/**
+	 * 
+	 * @param pet
+	 * @return
+	 */
+	@Override
+	public Pet create(Pet pet) {
+<span class="fc" id="L37">		return petRepository.save(pet);</span>
+	}
+
+	/**
+	 * 
+	 * @param pet
+	 * @return
+	 */
+	@Override
+	public Pet update(Pet pet) {
+<span class="fc" id="L47">		return petRepository.save(pet);</span>
+	}
+
+
+	/**
+	 * 
+	 * @param id
+	 * @throws PetNotFoundException
+	 */
+	@Override
+	public void delete(Integer id) throws PetNotFoundException{
+
+<span class="fc" id="L59">		Pet pet = findById(id);</span>
+<span class="fc" id="L60">		petRepository.delete(pet);</span>
+
+<span class="fc" id="L62">	}</span>
+
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@Override
+	public Pet findById(Integer id) throws PetNotFoundException {
+
+<span class="fc" id="L72">		Optional&lt;Pet&gt; pet = petRepository.findById(id);</span>
+
+<span class="fc bfc" id="L74" title="All 2 branches covered.">		if ( !pet.isPresent())</span>
+<span class="fc" id="L75">			throw new PetNotFoundException(&quot;Record not found...!&quot;);</span>
+			
+<span class="fc" id="L77">		return pet.get();</span>
+	}
+
+	/**
+	 * 
+	 * @param name
+	 * @return
+	 */
+	@Override
+	public List&lt;Pet&gt; findByName(String name) {
+
+<span class="fc" id="L88">		List&lt;Pet&gt; pets = petRepository.findByName(name);</span>
+
+<span class="fc" id="L90">		pets.stream().forEach(pet -&gt; log.info(&quot;&quot; + pet));</span>
+
+<span class="fc" id="L92">		return pets;</span>
+	}
+
+	/**
+	 * 
+	 * @param typeId
+	 * @return
+	 */
+	@Override
+	public List&lt;Pet&gt; findByTypeId(int typeId) {
+
+<span class="fc" id="L103">		List&lt;Pet&gt; pets = petRepository.findByTypeId(typeId);</span>
+
+<span class="fc" id="L105">		pets.stream().forEach(pet -&gt; log.info(&quot;&quot; + pet));</span>
+
+<span class="fc" id="L107">		return pets;</span>
+	}
+
+	/**
+	 * 
+	 * @param ownerId
+	 * @return
+	 */
+	@Override
+	public List&lt;Pet&gt; findByOwnerId(int ownerId) {
+
+<span class="fc" id="L118">		List&lt;Pet&gt; pets = petRepository.findByOwnerId(ownerId);</span>
+
+<span class="fc" id="L120">		pets.stream().forEach(pet -&gt; log.info(&quot;&quot; + pet));</span>
+
+<span class="fc" id="L122">		return pets;</span>
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	@Override
+	public List&lt;Pet&gt; findAll() {
+		//
+<span class="fc" id="L132">		return petRepository.findAll();</span>
+
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

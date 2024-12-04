@@ -1,0 +1,9 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+PetClinic,com.tecsup.petclinic.exception,PetNotFoundException,0,4,0,0,0,2,0,1,0,1
+PetClinic,com.tecsup.petclinic.services,PetServiceImpl,0,103,0,2,0,23,0,14,0,13
+PetClinic,com.tecsup.petclinic.webs,PetController,4,137,0,0,2,36,0,9,0,9
+PetClinic,com.tecsup.petclinic,PetClinicApplication,5,3,0,0,2,1,1,1,1,1
+PetClinic,com.tecsup.petclinic.mapper,PetMapper,5,30,1,1,3,9,1,3,0,3
+PetClinic,com.tecsup.petclinic.mapper,PetMapperImpl,8,117,4,8,2,29,4,7,0,5
+PetClinic,com.tecsup.petclinic.entities,Pet,85,150,22,12,0,21,17,17,1,16
+PetClinic,com.tecsup.petclinic.domain,PetTO,151,68,34,0,0,8,20,13,3,13
